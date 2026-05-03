@@ -59,7 +59,8 @@ pip install -r requirements.txt
 
 # 3. Copy env file and configure
 cp .env.example .env
-# Edit .env → set OPENAI_API_KEY for CrewAI mode (optional)
+# The app works out-of-the-box with ?mode=heuristic (default, no API key needed)
+# To use ?mode=crewai (LLM agents), set OPENAI_API_KEY in .env
 
 # 4. Run the server
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000

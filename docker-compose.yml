@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  genbuilder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: genbuilder-api
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_NAME=GenBuilder
+      - APP_VERSION=1.0.0
+      - DEBUG=true
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_MODEL_NAME=${OPENAI_MODEL_NAME:-gpt-4o}
+      - GENBUILDER_OUTPUT_DIR=/app/outputs
+    volumes:
+      # Persist generated results on the host
+      - ./outputs:/app/outputs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

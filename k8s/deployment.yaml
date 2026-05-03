@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: genbuilder-api
+  labels:
+    app: genbuilder
+    component: api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: genbuilder
+      component: api
+  template:
+    metadata:
+      labels:
+        app: genbuilder
+        component: api
+    spec:
+      containers:
+        - name: genbuilder
+          image: genbuilder:latest
+          ports:
+            - containerPort: 8000
+              name: http
+          env:
+            - name: APP_NAME
+              value: "GenBuilder"
+            - name: DEBUG
+              value: "false"
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: genbuilder-secrets
+                  key: openai-api-key
+            - name: GENBUILDER_OUTPUT_DIR
+              value: "/app/outputs"
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          volumeMounts:
+            - name: outputs
+              mountPath: /app/outputs
+      volumes:
+        - name: outputs
+          persistentVolumeClaim:
+            claimName: genbuilder-outputs-pvc

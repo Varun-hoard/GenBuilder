@@ -1,0 +1,39 @@
+# Render Configuration
+# Connect your GitHub repo to Render and paste this content into the render.yaml editor
+
+services:
+  - type: web
+    name: genbuilder-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: DEBUG
+        value: "false"
+      - key: CORS_ORIGINS
+        value: https://genbuilder-frontend.onrender.com
+      - key: OPENAI_API_KEY
+        value: ""  # Add your key in dashboard
+
+  - type: web
+    name: genbuilder-frontend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: "cd frontend && npm install && npm run build"
+    startCommand: "cd frontend && npm install -g serve && serve -s dist -l 3000"
+    envVars:
+      - key: NODE_VERSION
+        value: "18"
+      - key: VITE_API_URL
+        value: https://genbuilder-backend.onrender.com
+
+envVarGroups:
+  - name: production
+    envVars:
+      - key: OPENAI_API_KEY
+        scope: genbuilder-backend

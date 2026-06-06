@@ -5,6 +5,8 @@ constraints (load, material, boundary conditions) and generates structured param
 sets consumable by generative design solvers — bridging the gap between designer intent
 and solver configuration.
 
+**✨ Now with a beautiful, modern web UI!** | [Deployment Guide](./DEPLOYMENT.md)
+
 ## Architecture
 
 ```
@@ -48,41 +50,94 @@ and solver configuration.
 
 ## Quick Start
 
+### 🚀 Deploy to Free Cloud (Recommended)
+
+The easiest way to get started with a full UI and backend:
+
 ```bash
-# 1. Create virtual environment
+# Run the interactive deployment guide
+# On macOS/Linux:
+chmod +x deploy.sh
+./deploy.sh
+
+# On Windows:
+deploy.bat
+```
+
+This guides you through deploying to:
+- **Railway** ($5/mo free credits) + **Vercel** (free)
+- **Render** (free tier) + **Vercel**
+- **Fly.io** (free) + **Vercel**
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
+
+### 💻 Local Development
+
+**Using Docker Compose (easiest):**
+```bash
+docker-compose up --build
+# Frontend: http://localhost:3000
+# Backend: http://localhost:8000
+# API Docs: http://localhost:8000/docs
+```
+
+**Manual setup:**
+
+```bash
+# Backend (Terminal 1)
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
+# or: venv\Scripts\activate  # Windows
 
-# 2. Install dependencies
 pip install -r requirements.txt
-
-# 3. Copy env file and configure
 cp .env.example .env
-# The app works out-of-the-box with ?mode=heuristic (default, no API key needed)
-# To use ?mode=crewai (LLM agents), set OPENAI_API_KEY in .env
-
-# 4. Run the server
+# Edit .env if needed (optional, works with default heuristic mode)
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
-# 5. Run tests
+# Frontend (Terminal 2)
+cd frontend
+npm install
+npm run dev
+
+# Visit: http://localhost:3000
+```
+
+**Run tests:**
+```bash
 pytest tests/ -v
 ```
 
-### Docker
+## Web UI Features
 
-```bash
-# Build and run with Docker Compose
-docker-compose up --build
+The modern web interface provides:
 
-# Or build manually
-docker build -t genbuilder .
-docker run -p 8000:8000 -v ./outputs:/app/outputs genbuilder
-```
+- 🎨 **Beautiful Dashboard** – Intuitive form for entering design constraints
+- ⚡ **Dual Processing Modes** – Toggle between fast heuristic and smart CrewAI modes
+- 📊 **Results Viewer** – View, copy, and download generated parameters as JSON
+- 💾 **Result History** – Keep track of all generated designs
+- 📱 **Responsive Design** – Works perfectly on desktop and mobile
+- 🌙 **Dark Mode Ready** – Clean, modern Tailwind CSS styling
+
+### UI Screenshots
+
+**Form Interface:**
+- Project name input
+- Design constraints textarea
+- Mode selector (Heuristic/CrewAI)
+- Real-time validation
+- Helpful example text
+
+**Results Display:**
+- JSON code viewer with syntax highlighting
+- Parameter summary cards
+- Copy-to-clipboard functionality
+- Download as JSON file
+- Delete results
+- Project statistics
 
 ## Processing Modes
 
-GenBuilder supports two backends, selectable via the `?mode=` query parameter:
+GenBuilder supports two backends, selectable via the `?mode=` query parameter or in the UI:
 
 | Mode         | Query Param        | Requires API Key | Speed   | Description                         |
 |--------------|--------------------|-------------------|---------|-------------------------------------|

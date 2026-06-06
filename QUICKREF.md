@@ -22,14 +22,30 @@ npm run dev
 ```
 
 ## Deploy to Production (Free)
+
+**Best option - Fly.io + Vercel:**
+```bash
+# Install Fly CLI first: https://fly.io/docs/hands-on/install/
+
+flyctl auth login
+flyctl launch
+flyctl deploy
+
+# Get your backend URL
+flyctl info
+```
+
+Then deploy frontend to Vercel with `VITE_API_URL=https://genbuilder.fly.dev`
+
+**Alternative - Render + Vercel:**
+- Go to https://render.com
+- Connect GitHub, deploy Python app
+- Follow [DEPLOYMENT.md](./DEPLOYMENT.md) for details
+
+**Quick script (choose for you):**
 ```bash
 ./deploy.sh  # or: deploy.bat on Windows
 ```
-
-Then follow the interactive guide to deploy to:
-- Railway (backend) + Vercel (frontend) ⭐ Recommended
-- Render (backend) + Vercel (frontend)
-- Fly.io (backend) + Vercel (frontend)
 
 ## Key Files
 

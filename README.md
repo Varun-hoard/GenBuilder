@@ -65,9 +65,9 @@ deploy.bat
 ```
 
 This guides you through deploying to:
-- **Railway** ($5/mo free credits) + **Vercel** (free)
-- **Render** (free tier) + **Vercel**
-- **Fly.io** (free) + **Vercel**
+- **⭐ Fly.io** (best free, no cold starts) + **Vercel** (free)
+- **Render** (easier, free tier) + **Vercel**
+- **Railway** (if you get credits working) + **Vercel**
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
 

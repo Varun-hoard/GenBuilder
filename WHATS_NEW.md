@@ -29,18 +29,18 @@ Your GenBuilder project now has a **complete, production-ready web application**
 1. **Interactive Setup Scripts**
    - `deploy.sh` (macOS/Linux)
    - `deploy.bat` (Windows)
-   - Guides you through 3 free deployment options
+   - Guides you through free deployment options
 
 2. **Free Hosting Support**
-   - **Railway** ($5/month free credits) + **Vercel** (free) ⭐ Recommended
-   - **Render** (free tier) + **Vercel** (free)
-   - **Fly.io** (free) + **Vercel** (free)
+   - **⭐ Fly.io** (genuine free, no cold starts) + **Vercel** (free) - Recommended
+   - **Render** (easier setup, free tier) + **Vercel** (free)
+   - **Railway** (if you get credits working) + **Vercel** (free)
    - All with detailed, step-by-step instructions
 
 3. **Platform Configuration Files**
-   - `railway.json` - Railway deployment config
-   - `render.yaml` - Render deployment config
    - `fly.toml` - Fly.io deployment config
+   - `render.yaml` - Render deployment config
+   - `railway.json` - Railway deployment config
 
 ### 📦 Docker & Containerization
 
@@ -243,10 +243,10 @@ All issues have solutions documented in:
 
 | Component | Cost | Notes |
 |-----------|------|-------|
-| Railway Backend | Free | $5/month credits (sufficient for testing) |
+| Fly.io Backend | Free | Genuine free tier, no credit card needed |
 | Vercel Frontend | Free | Unlimited for static sites |
 | OpenAI API | ~$0.01-0.10/request | Only if using CrewAI mode |
-| **Total** | **Free** | Just cost of OpenAI API if needed |
+| **Total** | **$0** | Truly free (optional OpenAI API usage only) |
 
 ## Performance
 

@@ -24,80 +24,71 @@ export default function ParameterForm({ onSubmit, loading, error }) {
   const isValid = formData.projectName.trim() && formData.description.trim()
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit}>
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex gap-3">
-          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+        <div className="error-box">
+          <AlertCircle size={20} className="error-icon" style={{ flexShrink: 0, marginTop: '2px' }} />
           <div>
-            <p className="font-medium text-red-900">Error</p>
-            <p className="text-sm text-red-800 mt-1">{error}</p>
+            <p className="error-title">Error</p>
+            <p className="error-desc">{error}</p>
           </div>
         </div>
       )}
 
-      <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">
-          Project Name *
-        </label>
+      <div className="form-group">
+        <label className="form-label">Project Name *</label>
         <input
           type="text"
           name="projectName"
           value={formData.projectName}
           onChange={handleChange}
           placeholder="e.g., bracket-v1, heatsink-test"
-          className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+          className="custom-input"
           disabled={loading}
         />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">
-          Design Description *
-        </label>
+      <div className="form-group">
+        <label className="form-label">Design Description *</label>
         <textarea
           name="description"
           value={formData.description}
           onChange={handleChange}
           placeholder="Describe your design constraints: loads, materials, boundary conditions, safety factors, etc."
           rows="6"
-          className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none resize-none"
+          className="custom-input"
+          style={{ resize: 'vertical', minHeight: '120px' }}
           disabled={loading}
         />
-        <p className="mt-1 text-xs text-slate-500">
+        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
           Be specific about engineering constraints
         </p>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">
-          Solver Type
-        </label>
+      <div className="form-group">
+        <label className="form-label">Solver Type</label>
         <select
           name="solverType"
           value={formData.solverType}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-white"
+          className="custom-input"
           disabled={loading}
         >
-          <option value="default">Default</option>
-          <option value="topology">Topology Optimization</option>
-          <option value="structural">Structural Analysis</option>
-          <option value="thermal">Thermal Analysis</option>
+          <option value="default" style={{ background: '#131b2f' }}>Default</option>
+          <option value="topology" style={{ background: '#131b2f' }}>Topology Optimization</option>
+          <option value="structural" style={{ background: '#131b2f' }}>Structural Analysis</option>
+          <option value="thermal" style={{ background: '#131b2f' }}>Thermal Analysis</option>
         </select>
       </div>
 
       <button
         type="submit"
         disabled={!isValid || loading}
-        className={`w-full py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
-          isValid && !loading
-            ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:shadow-lg'
-            : 'bg-slate-300 text-slate-500 cursor-not-allowed'
-        }`}
+        className="btn-primary"
       >
         {loading ? (
           <>
-            <Loader className="w-4 h-4 animate-spin" />
+            <Loader size={18} className="animate-spin" />
             Processing...
           </>
         ) : (
@@ -105,9 +96,18 @@ export default function ParameterForm({ onSubmit, loading, error }) {
         )}
       </button>
 
-      <div className="pt-4 border-t border-slate-200">
-        <p className="text-xs text-slate-600 mb-3 font-medium">Example Input:</p>
-        <p className="text-xs text-slate-600 bg-slate-50 p-3 rounded border border-slate-200 font-mono leading-relaxed">
+      <div style={{ paddingTop: '1.5rem', marginTop: '1.5rem', borderTop: '1px solid var(--border-glass)' }}>
+        <p className="form-label" style={{ marginBottom: '0.75rem' }}>Example Input:</p>
+        <p style={{ 
+          fontSize: '0.8rem', 
+          color: 'var(--text-secondary)', 
+          background: 'rgba(0,0,0,0.2)', 
+          padding: '1rem', 
+          borderRadius: '8px', 
+          border: '1px solid var(--border-glass)',
+          fontFamily: 'monospace',
+          lineHeight: '1.6'
+        }}>
           Design a lightweight aluminum bracket that can withstand 500N of tensile load. The part is fixed at two bolt holes on the left face and the load is applied on the right edge. Minimum safety factor of 2.0.
         </p>
       </div>

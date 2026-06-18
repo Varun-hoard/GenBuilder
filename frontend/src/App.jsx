@@ -75,173 +75,123 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div>
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg">
-                <Zap className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-slate-900">GenBuilder</h1>
-                <p className="text-sm text-slate-500">LLM-Driven Design Parameter Optimizer</p>
-              </div>
-            </div>
-            <div className="text-right text-sm text-slate-600">
-              <p>Total: <span className="font-semibold">{stats.total}</span></p>
-              <p className="text-green-600">Success: <span className="font-semibold">{stats.success}</span></p>
-            </div>
+      <header className="app-header">
+        <div className="brand-logo">
+          <div className="logo-icon">
+            <Zap size={24} color="#fff" />
           </div>
+          <div>
+            <h1 className="brand-title">GenBuilder</h1>
+            <p className="brand-subtitle">LLM-Driven Design Parameter Optimizer</p>
+          </div>
+        </div>
+        <div className="stats-container">
+          <p>Total: <span style={{ fontWeight: 600, color: '#f8fafc' }}>{stats.total}</span></p>
+          <p className="stats-success">Success: <span style={{ fontWeight: 600 }}>{stats.success}</span></p>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Form Section */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-8">
-              <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
-                <h2 className="text-xl font-bold text-slate-900 mb-4">Generate Parameters</h2>
-                
-                {/* Mode Selector */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-slate-700 mb-3">
-                    Processing Mode
-                  </label>
-                  <div className="space-y-2">
-                    <label className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50"
-                      style={{ borderColor: mode === 'heuristic' ? '#0284c7' : '#e2e8f0' }}>
-                      <input
-                        type="radio"
-                        name="mode"
-                        value="heuristic"
-                        checked={mode === 'heuristic'}
-                        onChange={(e) => setMode(e.target.value)}
-                        className="w-4 h-4"
-                      />
-                      <div>
-                        <p className="font-medium text-slate-900">Heuristic (Fast)</p>
-                        <p className="text-xs text-slate-500">No API key needed • ~10ms</p>
-                      </div>
-                    </label>
-                    <label className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50"
-                      style={{ borderColor: mode === 'crewai' ? '#0284c7' : '#e2e8f0' }}>
-                      <input
-                        type="radio"
-                        name="mode"
-                        value="crewai"
-                        checked={mode === 'crewai'}
-                        onChange={(e) => setMode(e.target.value)}
-                        className="w-4 h-4"
-                      />
-                      <div>
-                        <p className="font-medium text-slate-900">CrewAI (Smart)</p>
-                        <p className="text-xs text-slate-500">Requires OpenAI API key • ~15-30s</p>
-                      </div>
-                    </label>
+      <main className="main-layout">
+        
+        {/* Form Section */}
+        <div className="form-section">
+          <div className="glass-panel" style={{ padding: '2rem' }}>
+            <h2 className="form-title">Generate Parameters</h2>
+            
+            {/* Mode Selector */}
+            <div className="form-group">
+              <label className="form-label">Processing Mode</label>
+              <div className="mode-selector">
+                <div 
+                  className={`mode-option ${mode === 'heuristic' ? 'active' : ''}`}
+                  onClick={() => setMode('heuristic')}
+                >
+                  <input
+                    type="radio"
+                    name="mode"
+                    value="heuristic"
+                    checked={mode === 'heuristic'}
+                    onChange={() => setMode('heuristic')}
+                    style={{ accentColor: 'var(--accent-cyan)' }}
+                  />
+                  <div>
+                    <p className="mode-title">Heuristic (Fast)</p>
+                    <p className="mode-desc">No API key needed • ~10ms</p>
                   </div>
                 </div>
+                
+                <div 
+                  className={`mode-option ${mode === 'crewai' ? 'active' : ''}`}
+                  onClick={() => setMode('crewai')}
+                >
+                  <input
+                    type="radio"
+                    name="mode"
+                    value="crewai"
+                    checked={mode === 'crewai'}
+                    onChange={() => setMode('crewai')}
+                    style={{ accentColor: 'var(--accent-cyan)' }}
+                  />
+                  <div>
+                    <p className="mode-title">CrewAI (Smart)</p>
+                    <p className="mode-desc">Requires OpenAI API key • ~15-30s</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                {/* Form */}
-                <ParameterForm 
-                  onSubmit={handleGenerateParameters}
-                  loading={loading}
-                  error={error}
+            {/* Form */}
+            <ParameterForm 
+              onSubmit={handleGenerateParameters}
+              loading={loading}
+              error={error}
+            />
+          </div>
+        </div>
+
+        {/* Results Section */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          
+          {/* Results List */}
+          {results.length > 0 && (
+            <div className="glass-panel">
+              <div className="results-header">
+                <h2 className="form-title" style={{ marginBottom: 0 }}>
+                  Recent Results ({results.length})
+                </h2>
+              </div>
+              <div style={{ maxHeight: '24rem', overflowY: 'auto' }}>
+                <ResultsList 
+                  results={results} 
+                  selectedResult={selectedResult} 
+                  onSelect={setSelectedResult}
+                  onDownload={handleDownloadResult}
+                  onDelete={handleDeleteResult}
                 />
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Results Section */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Results List */}
-            {results.length > 0 && (
-              <div className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
-                <div className="p-6 border-b border-slate-200">
-                  <h2 className="text-xl font-bold text-slate-900">
-                    Recent Results ({results.length})
-                  </h2>
-                </div>
-                <div className="divide-y divide-slate-200 max-h-96 overflow-y-auto">
-                  {results.map((result) => (
-                    <div
-                      key={result.id}
-                      onClick={() => setSelectedResult(result)}
-                      className={`p-4 cursor-pointer transition-colors hover:bg-slate-50 border-l-4 ${
-                        selectedResult?.id === result.id
-                          ? 'bg-primary-50 border-primary-500'
-                          : 'border-transparent'
-                      }`}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-slate-900">{result.projectName}</h3>
-                          <p className="text-sm text-slate-500 mt-1 line-clamp-2">
-                            {result.description}
-                          </p>
-                          <div className="flex items-center gap-4 mt-2 text-xs text-slate-600">
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {new Date(result.timestamp).toLocaleTimeString()}
-                            </span>
-                            <span className="px-2 py-1 bg-slate-100 rounded text-slate-700 font-medium">
-                              {result.mode}
-                            </span>
-                            <CheckCircle className="w-4 h-4 text-green-500" />
-                          </div>
-                        </div>
-                        <div className="flex gap-2 ml-4">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              handleDownloadResult(result)
-                            }}
-                            className="p-2 text-slate-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
-                            title="Download JSON"
-                          >
-                            <Download className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              handleDeleteResult(result.id)
-                            }}
-                            className="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                            title="Delete"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+          {/* Selected Result Viewer */}
+          {selectedResult && (
+            <ResultViewer result={selectedResult} />
+          )}
+
+          {/* Empty State */}
+          {results.length === 0 && !loading && (
+            <div className="glass-panel empty-state">
+              <div className="empty-icon">
+                <Zap size={32} />
               </div>
-            )}
-
-            {/* Selected Result Viewer */}
-            {selectedResult && (
-              <ResultViewer result={selectedResult} />
-            )}
-
-            {/* Empty State */}
-            {results.length === 0 && !loading && (
-              <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-12 text-center">
-                <div className="flex justify-center mb-4">
-                  <div className="p-3 bg-slate-100 rounded-lg">
-                    <Zap className="w-8 h-8 text-slate-400" />
-                  </div>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">No Results Yet</h3>
-                <p className="text-slate-600">
-                  Fill out the form and click "Generate Parameters" to get started
-                </p>
-              </div>
-            )}
-          </div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
+                No Results Yet
+              </h3>
+              <p>Fill out the form and click "Generate Parameters" to get started</p>
+            </div>
+          )}
         </div>
       </main>
     </div>
